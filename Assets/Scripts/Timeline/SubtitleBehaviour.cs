@@ -5,7 +5,9 @@ using UnityEngine.Playables;
 
 public class SubtitleBehaviour : PlayableBehaviour
 {
-    public string subtitleText; 
+
+    public int startPos;
+    public int length;
 
     private bool ran = false;
 
@@ -17,10 +19,11 @@ public class SubtitleBehaviour : PlayableBehaviour
     {
         if(ran) return;
         ran = true;
-        StringEvent stringEvent = playerData as StringEvent;
+        IntEvent intEvent = playerData as IntEvent;
 
-        stringEvent.FireEvent(
-            subtitleText
+        intEvent.FireEventHiLowWord(
+            startPos,
+            length
         );
     }
 }

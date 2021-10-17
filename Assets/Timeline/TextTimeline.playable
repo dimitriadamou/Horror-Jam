@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c1efdd8557940449f6ead5011fa11e, type: 3}
   m_Name: SubtitleClip
   m_EditorClassIdentifier: 
-  subtitleText: ' teeeexxxxxxxxx'
+  startPos: 0
+  length: 0
+  story: {fileID: 0}
 --- !u!114 &-4567277265656143365
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -408,7 +410,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c1efdd8557940449f6ead5011fa11e, type: 3}
   m_Name: SubtitleClip
   m_EditorClassIdentifier: 
-  subtitleText: 'Hello '
+  startPos: 0
+  length: 5
+  story: {fileID: 11400000, guid: 43f66eda6b91844659eb73d1c8090bd9, type: 2}
+--- !u!114 &-153944376231857028
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b22792c3b570444eb18cb78c2af3a74, type: 3}
+  m_Name: Audio Track
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_AnimClip: {fileID: 0}
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_Curves: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips: []
+  m_Markers:
+    m_Objects: []
+  m_TrackProperties:
+    volume: 1
+    stereoPan: 0
+    spatialBlend: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +455,7 @@ MonoBehaviour:
   m_Version: 0
   m_Tracks:
   - {fileID: -4567277265656143365}
+  - {fileID: -153944376231857028}
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
@@ -442,7 +474,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c1efdd8557940449f6ead5011fa11e, type: 3}
   m_Name: SubtitleClip
   m_EditorClassIdentifier: 
-  subtitleText: 'I '
+  startPos: 0
+  length: 0
+  story: {fileID: 0}
 --- !u!114 &6904628059469850181
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -455,7 +489,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c1efdd8557940449f6ead5011fa11e, type: 3}
   m_Name: SubtitleClip
   m_EditorClassIdentifier: 
-  subtitleText: 'horror '
+  startPos: 0
+  length: 0
+  story: {fileID: 0}
 --- !u!114 &7594936816191237289
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -468,7 +504,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c1efdd8557940449f6ead5011fa11e, type: 3}
   m_Name: SubtitleClip
   m_EditorClassIdentifier: 
-  subtitleText: xxxxxt
+  startPos: 0
+  length: 0
+  story: {fileID: 0}
 --- !u!114 &7608883819846034804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -481,4 +519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c1efdd8557940449f6ead5011fa11e, type: 3}
   m_Name: SubtitleClip
   m_EditorClassIdentifier: 
-  subtitleText: 'am '
+  startPos: 0
+  length: 0
+  story: {fileID: 0}

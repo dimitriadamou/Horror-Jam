@@ -6,45 +6,109 @@ public class SubtitleManager : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] TMPro.TMP_Text targetText;
-    [SerializeField] StringEvent OnNewText;
+    [SerializeField] IntEvent OnNewText;
+
+    [SerializeField] Story activeStory;
+
+    [SerializeField] NoArgEvent OnWrongPress;
 
     Mesh mesh;
     Vector3[] vertices;
-    private List<int> wordIndexes;
-    private List<int> wordLengths;
-
+    Color[] colours;
     private List<float> wordSpit;
+
+    private int cursor = 0;
+    private int exposedRange = 0;
+
+    private int textLength;
+
+    private void Awake() {
+        targetText.text = activeStory.GetText();
+        targetText.ForceMeshUpdate(false,true);
+        wordSpit = new List<float>();
+        wordSpit.Capacity = targetText.text.Length;
+        textLength = targetText.text.Length;
+
+        mesh=targetText.mesh;
+        vertices=mesh.vertices;
+        colours = mesh.colors;
+
+        foreach (var item in targetText.textInfo.characterInfo)
+        {
+            int index = item.vertexIndex;
+
+            colours[index].a = 0f;
+            colours[index+1].a = 0f;
+            colours[index+2].a = 0f;
+            colours[index+3].a = 0f;
+        }
+
+
+        Debug.Log(mesh.colors.Length);
+        Debug.Log(mesh.colors.ToString());
+        
+    }
 
     private void OnEnable() {
         OnNewText.Callback += OnNewTextCallback;  
+        UnityEngine.InputSystem.Keyboard.current.onTextInput += OnKeyPress;
     }
 
     private void OnDisable() {
         OnNewText.Callback -= OnNewTextCallback;    
+        UnityEngine.InputSystem.Keyboard.current.onTextInput -= OnKeyPress;
     }
 
-    private void OnNewTextCallback(string text)
+    private void OnKeyPress(char key) 
     {
-        targetText.text += text;
-        targetText.ForceMeshUpdate();
+        if(targetText.text[cursor] == key) {
+            //targetText.text = targetText.text.Substring(1);
+            var item = targetText.textInfo.characterInfo[cursor];
+            int index = item.vertexIndex;
 
-        string fullText = targetText.text;
-        wordIndexes = new List<int>{0};
-        wordLengths = new List<int>();
+            colours[index].a = 0f;
+            colours[index+1].a = 0f;
+            colours[index+2].a = 0f;
+            colours[index+3].a = 0f;
 
-        if(wordSpit == null) {
-            wordSpit = new List<float>();
+            var right = Vector3.right;
+
+            for (var i = cursor; i < textLength; i++)
+            {   
+                item = targetText.textInfo.characterInfo[i];
+                index = item.vertexIndex;
+
+
+                vertices[index] -= right * 18;
+                vertices[index+1] -= right * 18;
+                vertices[index+2] -= right * 18;
+                vertices[index+3] -= right * 18;
+            }
+
+            cursor++;
+        } else {
+            OnWrongPress.FireEvent();
         }
+    }
 
-        for(int index = fullText.IndexOf(' '); index > -1; index = fullText.IndexOf(' ', index + 1))
+    private void OnNewTextCallback(int data)
+    {
+        int position = (data & 0xfff00) >> 8;
+        int length = data & 0xff;
+
+        exposedRange = position + length;
+
+        for (int w = position; w < exposedRange; w++)
         {
-            wordLengths.Add(index - wordIndexes[wordIndexes.Count - 1]);
-            wordIndexes.Add(index + 1);
-            wordSpit.Add(1f);
+            var item = targetText.textInfo.characterInfo[w];
+            int index = item.vertexIndex;
+
+            colours[index].a = 1f;
+            colours[index+1].a = 1f;
+            colours[index+2].a = 1f;
+            colours[index+3].a = 1f;
         }
 
-        wordLengths.Add(fullText.Length - wordIndexes[wordIndexes.Count - 1]);
-        wordSpit.Add(1f);
     }
 
     // Update is called once per frame
@@ -75,9 +139,14 @@ public class SubtitleManager : MonoBehaviour
 
     void Update()
     {
-        if(wordIndexes == null) return;
 
         targetText.ForceMeshUpdate();
+        mesh.vertices = vertices;
+        mesh.colors = colours;
+        targetText.canvasRenderer.SetMesh(mesh);
+        /*
+        if(wordIndexes == null) return;
+
         mesh = targetText.mesh;
         vertices = mesh.vertices;
         for (int w = 0; w < wordIndexes.Count; w++)
@@ -98,6 +167,7 @@ public class SubtitleManager : MonoBehaviour
             }
         }
         mesh.vertices = vertices;
-        targetText.canvasRenderer.SetMesh(mesh);        
+        targetText.canvasRenderer.SetMesh(mesh);   
+        */     
     }
 }

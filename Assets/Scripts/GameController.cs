@@ -12,21 +12,14 @@ public class GameController : MonoBehaviour
 
     private void Awake() {
         playerHealth.Value = 100; //default to 100.
+        OnWrongPress.Callback += OnWrongPressEvent;
     }
 
-    private void OnEnable() {
-        //inputController.EnableGameInput();
-        UnityEngine.InputSystem.Keyboard.current.onTextInput += OnKeyPress;
-        //inputController.OnKeyPress += OnKeyPress;
+    private void OnDestroy() {
+        OnWrongPress.Callback -= OnWrongPressEvent;
     }
-
-    private void OnKeyPress(char key) 
+    private void OnWrongPressEvent()
     {
-        if(targetText.text[0] == key) {
-            targetText.text = targetText.text.Substring(1);
-        } else {
-            OnWrongPress.FireEvent();
-            playerHealth.Value = playerHealth.Value - 5;
-        }
+        playerHealth.Value = playerHealth.Value - 5;
     }
 }

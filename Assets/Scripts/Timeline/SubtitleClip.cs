@@ -43,8 +43,6 @@ public class TestInspector : Editor {
         var maxLen = text.Length > 118 ? 118 : text.Length;
         text = text.Substring(startPosition, maxLen);
 
-        Debug.Log(text);
-
         
         GUILayout.Label(
             text,

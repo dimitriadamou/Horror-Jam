@@ -9,6 +9,6 @@ public class Story : ScriptableObject {
 
     public string GetText()
     {
-        return string.Join("\n", Lines);
+        return string.Join(" ", Lines);
     }
 }

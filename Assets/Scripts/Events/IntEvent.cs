@@ -13,7 +13,7 @@ public class IntEvent : ScriptableObject {
 
     public void FireEventHiLowWord(int high, int low)
     {
-        if(Callback != null) Callback.Invoke(high << 16 | low);
+        if(Callback != null) Callback.Invoke(high << 8 | low);
 
     }
 }

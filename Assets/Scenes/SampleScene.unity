@@ -157,6 +157,8 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: -4567277265656143365, guid: e6d8970105246408fadd71b8750f9496, type: 2}
     value: {fileID: 11400000, guid: 893cd1e2bbd784f0aa4dbef5f91be59e, type: 2}
+  - key: {fileID: -153944376231857028, guid: e6d8970105246408fadd71b8750f9496, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &150504506
@@ -491,7 +493,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetText: {fileID: 1711396826}
-  OnNewText: {fileID: 11400000, guid: 2cc3348f403f040f7b11763c6ea26dc5, type: 2}
+  OnNewText: {fileID: 11400000, guid: 893cd1e2bbd784f0aa4dbef5f91be59e, type: 2}
+  activeStory: {fileID: 11400000, guid: 43f66eda6b91844659eb73d1c8090bd9, type: 2}
+  OnWrongPress: {fileID: 11400000, guid: 2577b27ef6b284b73a885965f3419f19, type: 2}
 --- !u!1 &476150739
 GameObject:
   m_ObjectHideFlags: 0
@@ -992,7 +996,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 9.84375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1737,7 +1741,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2023472148
 RectTransform:
   m_ObjectHideFlags: 0

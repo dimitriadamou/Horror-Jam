@@ -25,6 +25,7 @@ public class SubtitleManager : MonoBehaviour
     private void Awake() {
         targetText.text = activeStory.GetText();
         targetText.ForceMeshUpdate(false,true);
+        
         wordSpit = new List<float>();
         wordSpit.Capacity = targetText.text.Length;
         textLength = targetText.text.Length;
@@ -32,6 +33,8 @@ public class SubtitleManager : MonoBehaviour
         mesh=targetText.mesh;
         vertices=mesh.vertices;
         colours = mesh.colors;
+
+        float yOffset = 0;
 
         foreach (var item in targetText.textInfo.characterInfo)
         {
@@ -41,51 +44,75 @@ public class SubtitleManager : MonoBehaviour
             colours[index+1].a = 0f;
             colours[index+2].a = 0f;
             colours[index+3].a = 0f;
+
+
+            if(item.character == ' ') {
+                yOffset = 0; //Mathf.Sin(item.index) * 50;
+            } else {
+                vertices[index].y += yOffset;
+                vertices[index+1].y += yOffset;
+                vertices[index+2].y += yOffset;
+                vertices[index+3].y += yOffset;
+            }
         }
-
-
-        Debug.Log(mesh.colors.Length);
-        Debug.Log(mesh.colors.ToString());
         
+        mesh.vertices = vertices;
+        mesh.colors = colours;
+        targetText.canvasRenderer.SetMesh(mesh);
     }
 
     private void OnEnable() {
         OnNewText.Callback += OnNewTextCallback;  
         UnityEngine.InputSystem.Keyboard.current.onTextInput += OnKeyPress;
     }
-
     private void OnDisable() {
         OnNewText.Callback -= OnNewTextCallback;    
         UnityEngine.InputSystem.Keyboard.current.onTextInput -= OnKeyPress;
     }
 
+    private void ProgressCursor()
+    {
+        var item = targetText.textInfo.characterInfo[cursor];
+        int index = item.vertexIndex;
+
+        colours[index].a = 0f;
+        colours[index+1].a = 0f;
+        colours[index+2].a = 0f;
+        colours[index+3].a = 0f;
+
+        var right = Vector3.right;
+
+        item = targetText.textInfo.characterInfo[cursor];
+        index = item.vertexIndex;
+        
+        float topLeftX = item.topRight.x - item.topLeft.x;
+
+        for (var i = cursor + 1; i < textLength; i++)
+        {   
+            item = targetText.textInfo.characterInfo[i];
+            index = item.vertexIndex;
+
+            vertices[index].x -= topLeftX;
+            vertices[index+1].x -= topLeftX;
+            vertices[index+2].x -= topLeftX;
+            vertices[index+3].x -= topLeftX;
+        }
+
+        cursor++;
+    }
     private void OnKeyPress(char key) 
     {
-        if(targetText.text[cursor] == key) {
+        if(
+            char.ToLower(targetText.text[cursor]) == char.ToLower(key) || 
+            (targetText.text[cursor] == ' ' && key != ' ' && targetText.text[cursor+1] == char.ToLower(key))
+        ) {
             //targetText.text = targetText.text.Substring(1);
-            var item = targetText.textInfo.characterInfo[cursor];
-            int index = item.vertexIndex;
-
-            colours[index].a = 0f;
-            colours[index+1].a = 0f;
-            colours[index+2].a = 0f;
-            colours[index+3].a = 0f;
-
-            var right = Vector3.right;
-
-            for (var i = cursor; i < textLength; i++)
-            {   
-                item = targetText.textInfo.characterInfo[i];
-                index = item.vertexIndex;
-
-
-                vertices[index] -= right * 18;
-                vertices[index+1] -= right * 18;
-                vertices[index+2] -= right * 18;
-                vertices[index+3] -= right * 18;
+            if(
+                (targetText.text[cursor] == ' ' && key != ' ' && targetText.text[cursor+1] == char.ToLower(key))
+            ) {
+                ProgressCursor();
             }
-
-            cursor++;
+            ProgressCursor();
         } else {
             OnWrongPress.FireEvent();
         }
@@ -139,35 +166,20 @@ public class SubtitleManager : MonoBehaviour
 
     void Update()
     {
-
         targetText.ForceMeshUpdate();
+
+        for (int w = cursor; w < exposedRange; w++)
+        {
+            int index = targetText.textInfo.characterInfo[w].vertexIndex;
+            vertices[index].x -= Time.deltaTime * 100;
+            vertices[index+1].x -= Time.deltaTime * 100;
+            vertices[index+2].x -= Time.deltaTime * 100;
+            vertices[index+3].x -= Time.deltaTime * 100;
+
+        }
+
         mesh.vertices = vertices;
         mesh.colors = colours;
         targetText.canvasRenderer.SetMesh(mesh);
-        /*
-        if(wordIndexes == null) return;
-
-        mesh = targetText.mesh;
-        vertices = mesh.vertices;
-        for (int w = 0; w < wordIndexes.Count; w++)
-        {
-            int wordIndex = wordIndexes[w];
-
-            var offset = MoveWords(w);
-
-            for (int i = 0; i < wordLengths[w]; i++)
-            {
-                TMPro.TMP_CharacterInfo c = targetText.textInfo.characterInfo[wordIndex+i];
-                int index = c.vertexIndex;
-
-                vertices[index] += offset;
-                vertices[index + 1] += offset;
-                vertices[index + 2] += offset;
-                vertices[index + 3] += offset;
-            }
-        }
-        mesh.vertices = vertices;
-        targetText.canvasRenderer.SetMesh(mesh);   
-        */     
     }
 }

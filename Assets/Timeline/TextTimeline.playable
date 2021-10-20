@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SubtitleClip
   m_EditorClassIdentifier: 
   startPos: 25
-  length: 5
+  length: 6
   story: {fileID: 11400000, guid: 43f66eda6b91844659eb73d1c8090bd9, type: 2}
 --- !u!114 &-4567277265656143365
 MonoBehaviour:
@@ -504,8 +504,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c1efdd8557940449f6ead5011fa11e, type: 3}
   m_Name: SubtitleClip
   m_EditorClassIdentifier: 
-  startPos: 30
-  length: 9
+  startPos: 31
+  length: 8
   story: {fileID: 11400000, guid: 43f66eda6b91844659eb73d1c8090bd9, type: 2}
 --- !u!114 &7608883819846034804
 MonoBehaviour:

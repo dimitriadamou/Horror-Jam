@@ -8,6 +8,7 @@ public class GrandmaLerp : MonoBehaviour
     [SerializeField] GameObject target;
 
     [SerializeField] Animator animator;
+    [SerializeField] Animator kidAnimator;
     private float startXPos = 0;
     private float destXPos = 0;
     private float direction  = 0;
@@ -32,6 +33,7 @@ public class GrandmaLerp : MonoBehaviour
 
 
         animator.SetBool("IsMoving", true);
+        kidAnimator.SetBool("IsGrandmaComing", true);
     }
     private void Update() {
 
@@ -40,6 +42,7 @@ public class GrandmaLerp : MonoBehaviour
             destXPos)
         ) {
             animator.SetBool("IsMoving", false);
+            kidAnimator.SetBool("IsGrandmaComing", false);
             return;
         }
 

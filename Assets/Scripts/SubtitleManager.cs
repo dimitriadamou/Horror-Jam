@@ -236,7 +236,7 @@ public class SubtitleManager : MonoBehaviour
 
         if(mode == 1) {
             exposedRange = position + length;
-            timeOverall -= 5000f;
+            timeOverall -= 1f;
         }
     }
 

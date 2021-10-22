@@ -18,6 +18,7 @@ public class GrandmaLerp : MonoBehaviour
     {
         destXPos = startXPos = this.transform.position.x;
         startCameraDollyYPos = bringHimToMe.transform.localPosition.y; 
+        playerHealth.Value = 100;
         playerHealth.Callback += CalculateNewPosition;
     }
 
@@ -45,8 +46,14 @@ public class GrandmaLerp : MonoBehaviour
         direction = destXPos <= this.transform.position.x ? -1 : 1;
 
 
-        animator.SetBool("IsMoving", true);
-        kidAnimator.SetBool("IsGrandmaComing", true);
+        if(value == 0)
+        {
+            kidAnimator.SetBool("IsDead", true);
+            animator.SetBool("Kill", true);
+        } else {
+            animator.SetBool("IsMoving", true);
+            kidAnimator.SetBool("IsGrandmaComing", true);
+        }
     }
     private void Update() {
 

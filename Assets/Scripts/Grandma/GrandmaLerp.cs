@@ -7,15 +7,23 @@ public class GrandmaLerp : MonoBehaviour
     [SerializeField] SharedInt playerHealth;
     [SerializeField] GameObject target;
     [SerializeField] GameObject bringHimToMe;
+
+    [SerializeField] GameState gameState;
     private float startCameraDollyYPos = 0;
 
     [SerializeField] Animator animator;
     [SerializeField] Animator kidAnimator;
+
+    [SerializeField] PlayClip soundLaugh;
+    [SerializeField] PlayClip soundEat;
+
+    private AudioSource audioSource;
     private float startXPos = 0;
     private float destXPos = 0;
     private float direction  = 0;
     void Start()
     {
+        audioSource = this.GetComponent<AudioSource>();
         destXPos = startXPos = this.transform.position.x;
         startCameraDollyYPos = bringHimToMe.transform.localPosition.y; 
         playerHealth.Value = 100;
@@ -50,7 +58,11 @@ public class GrandmaLerp : MonoBehaviour
         {
             kidAnimator.SetBool("IsDead", true);
             animator.SetBool("Kill", true);
+            audioSource.PlayOneShot(soundEat.audioClip);
+            gameState.LoseGame();
+            
         } else {
+            audioSource.PlayOneShot(soundLaugh.audioClip);
             animator.SetBool("IsMoving", true);
             kidAnimator.SetBool("IsGrandmaComing", true);
         }

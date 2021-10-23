@@ -15,7 +15,11 @@ public class SubtitleManager : MonoBehaviour
 
     [SerializeField] Story activeStory;
 
+    [SerializeField] SharedInt playerHealth;
+
     [SerializeField] NoArgEvent OnWrongPress;
+
+    [SerializeField] GameState gameState;
 
 
     Mesh mesh;
@@ -72,7 +76,6 @@ public class SubtitleManager : MonoBehaviour
 
     private void Awake() {
         
-        PlayableExtensions.SetSpeed(playableDirector.playableGraph.GetRootPlayable(0), 1f);
         if(mode == 0) {
             PopulateText("");
         }
@@ -81,7 +84,6 @@ public class SubtitleManager : MonoBehaviour
         {
             PopulateText(activeStory.GetText());
         }
-        playableDirector.Play();
 
     }
 
@@ -132,6 +134,17 @@ public class SubtitleManager : MonoBehaviour
     }
     private void OnKeyPress(char key) 
         {
+
+        if(gameState.Paused) {
+            gameState.Intro = false;
+            gameState.Paused = false;
+            return;
+        }
+
+        if(gameState.Paused) {
+            return;
+        }
+
         var tmpCursor = cursor;
 
 
@@ -223,6 +236,8 @@ public class SubtitleManager : MonoBehaviour
     {
         playableDirector.Play();
 
+        playerHealth.Value = Mathf.Max(playerHealth.Value + 10, 100);
+
         int position = ((data & 0xfff00) >> 8);
         int length = data & 0xff;
 
@@ -238,6 +253,7 @@ public class SubtitleManager : MonoBehaviour
             exposedRange = position + length;
             timeOverall -= 1f;
         }
+
     }
 
     // Update is called once per frame
@@ -270,9 +286,12 @@ public class SubtitleManager : MonoBehaviour
 
     void Update()
     {
+        if(gameState.Paused) return;
+
         if(playableDirector.state == PlayState.Paused && cursor >= (exposedRange)) {
             PopulateText("");
             playableDirector.Play();
+            return;
         }
 
         targetText.ForceMeshUpdate();

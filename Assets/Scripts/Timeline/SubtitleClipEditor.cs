@@ -14,6 +14,7 @@ public class SubtitleClipEditor : UnityEditor.Editor {
  
         GUIStyle style = new GUIStyle ();
         style.richText = true;
+        style.wordWrap = true;
 
         var text = clip.story.GetText().
                     Insert(clip.startPos + clip.length, "</b></color>").
@@ -21,9 +22,9 @@ public class SubtitleClipEditor : UnityEditor.Editor {
 
         var extraLength = "<color=yellow><b></b></color>".Length;
 
-        var startPosition = Mathf.Clamp(clip.startPos - 100, 0, clip.startPos);
-        var maxLen = text.Length > 118 ? 118 : text.Length;
-        text = text.Substring(startPosition, maxLen);
+        var startPosition = Mathf.Clamp(clip.startPos - 10, 0, clip.startPos);
+        var maxLen = text.Length > (clip.length + 20) ? (clip.length+20) : text.Length;
+        //text = text.Substring(startPosition, startPosition + maxLen);
 
         
         GUILayout.Label(

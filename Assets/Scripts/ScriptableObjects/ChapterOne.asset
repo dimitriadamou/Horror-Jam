@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: ChapterOne
   m_EditorClassIdentifier: 
   Lines:
-  - This is the chapter one.
-  - A one chapter of all the chapters.
-  - And here we are.
-  audio: {fileID: 0}
+  - Fear had lurked on Tempest Mountain for more than a century.
+  - This I learned at once from newspaper accounts of the catastrophe which first
+    brought the region to the worlds notice.
+  - The place is a remote, lonely elevation in that part of the Catskills where Dutch
+    civilisation once feebly and transiently penetrated, leaving behind as it receded
+    only a few ruined mansions and a degenerate squatter population inhabiting pitiful
+    hamlets on isolated slopes.
+  audio: {fileID: 8300000, guid: fe0ab40f2c36747b48da65ffec206c31, type: 3}

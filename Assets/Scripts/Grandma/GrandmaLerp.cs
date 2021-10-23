@@ -6,6 +6,8 @@ public class GrandmaLerp : MonoBehaviour
 {
     [SerializeField] SharedInt playerHealth;
     [SerializeField] GameObject target;
+    [SerializeField] GameObject bringHimToMe;
+    private float startCameraDollyYPos = 0;
 
     [SerializeField] Animator animator;
     [SerializeField] Animator kidAnimator;
@@ -15,6 +17,8 @@ public class GrandmaLerp : MonoBehaviour
     void Start()
     {
         destXPos = startXPos = this.transform.position.x;
+        startCameraDollyYPos = bringHimToMe.transform.localPosition.y; 
+        playerHealth.Value = 100;
         playerHealth.Callback += CalculateNewPosition;
     }
 
@@ -24,16 +28,32 @@ public class GrandmaLerp : MonoBehaviour
         var percentage = ((float)value/100f);
 
         destXPos = Mathf.Lerp(
-            target.transform.position.x,
+            target.transform.position.x + 2,
             startXPos,
             percentage
+        );
+
+        bringHimToMe.transform.localPosition = new Vector3(
+            0,
+            Mathf.Lerp(
+                (transform.position.y + 10),
+                startCameraDollyYPos,
+                percentage
+            ),
+            0
         );
 
         direction = destXPos <= this.transform.position.x ? -1 : 1;
 
 
-        animator.SetBool("IsMoving", true);
-        kidAnimator.SetBool("IsGrandmaComing", true);
+        if(value == 0)
+        {
+            kidAnimator.SetBool("IsDead", true);
+            animator.SetBool("Kill", true);
+        } else {
+            animator.SetBool("IsMoving", true);
+            kidAnimator.SetBool("IsGrandmaComing", true);
+        }
     }
     private void Update() {
 

@@ -7,7 +7,7 @@ public class SubtitleManager : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    private int mode = 1;
+    private int mode = 0;
     [SerializeField] TMPro.TMP_Text targetText;
 
     [SerializeField] TMPro.TMP_Text errorText;
@@ -270,11 +270,12 @@ public class SubtitleManager : MonoBehaviour
 
     void Update()
     {
-        if(playableDirector.state == PlayState.Paused && cursor >= (exposedRange-1)) {
+        if(playableDirector.state == PlayState.Paused && cursor >= (exposedRange)) {
+            PopulateText("");
             playableDirector.Play();
         }
-        targetText.ForceMeshUpdate();
 
+        targetText.ForceMeshUpdate();
         timeOverall += Time.deltaTime;
 
         mesh = targetText.mesh;
@@ -293,6 +294,7 @@ public class SubtitleManager : MonoBehaviour
         for (int w = cursor; w < exposedRange; w++)
         {
             int index = targetText.textInfo.characterInfo[w].vertexIndex;
+            if(!targetText.textInfo.characterInfo[w].isVisible) continue;
 
             vertices[index].x -= timeOverall * 300;
             vertices[index+1].x -=  timeOverall  * 300;
